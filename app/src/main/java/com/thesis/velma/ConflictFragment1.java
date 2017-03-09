@@ -88,8 +88,7 @@ public class ConflictFragment1 extends AppCompatActivity {
     ArrayList<String> myCurrentEvent = new ArrayList<>();
     Dialog dialog;
     String eventID, newdate;
-    String con_sd ="", con_ed ="", con_name="", con_desc="";
-
+    String con_sd = "", con_ed = "", con_name = "", con_desc = "";
 
 
     @Override
@@ -126,8 +125,6 @@ public class ConflictFragment1 extends AppCompatActivity {
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
 
-
-
         final AlertDialog a_build = new AlertDialog.Builder(context)
                 .setTitle("Velma Suggestion")
                 .setMessage("Do you want Velma to suggest the time? ")
@@ -149,10 +146,10 @@ public class ConflictFragment1 extends AppCompatActivity {
         Intent i = getIntent();
         String id = i.getStringExtra("eventID");
         newdate = i.getStringExtra("newdate");
-        Log.i("Event Ac1", ""+newdate + " "+id);
+        Log.i("Event Ac1", "" + newdate + " " + id);
 
         final Cursor c = db.editConflictEvent(Long.valueOf(id));
-        Log.i("Event Ac2", ""+c);
+        Log.i("Event Ac2", "" + c);
 
         c.moveToFirst();
 
@@ -166,7 +163,7 @@ public class ConflictFragment1 extends AppCompatActivity {
         descrip.setText(con_desc);
 //        OnboardingFragment2_1.dateStart.setText(con_sd);
 //        OnboardingFragment2_1.dateEnd.setText(con_ed);
-        Log.i("Event conAct",con_name +" "+ con_desc +" "+ con_sd +" "+ con_ed);
+        Log.i("Event conAct", con_name + " " + con_desc + " " + con_sd + " " + con_ed);
         //finCursor
         //   a_build.dismiss();
 //
@@ -283,10 +280,6 @@ public class ConflictFragment1 extends AppCompatActivity {
 //        }
 
 
-
-
-
-
         autocompleteFragment.setBoundsBias(new LatLngBounds(
                 new LatLng(14.599512, 120.984222),
                 new LatLng(14.599512, 120.984222)));
@@ -384,7 +377,6 @@ public class ConflictFragment1 extends AppCompatActivity {
                 final String invitedContacts = OnboardingFragment3.mtxtinvited.getText().toString();
 
 
-
                 myCurrentEvent.add(name);
                 myCurrentEvent.add(eventDescription);
                 myCurrentEvent.add(eventLocation);
@@ -398,7 +390,7 @@ public class ConflictFragment1 extends AppCompatActivity {
                 Log.d("EndTime", endDate + " " + endTime);
 
 
-                final Cursor c = db.conflictChecker(startDate,startTime,endDate,endTime);
+                final Cursor c = db.conflictChecker(startDate, startTime, endDate, endTime);
                 String[] mydates = startDate.split("-");
                 String[] mytimes = startTime.split(":");
 
@@ -414,7 +406,7 @@ public class ConflictFragment1 extends AppCompatActivity {
                 Log.d("Calendar.HOUR_OF_DAY", "" + Integer.parseInt(mytimes[0]));
                 Log.d("Calendar.MINUTE", "" + Integer.parseInt(mytimes[1]));
 
-                String date=""+mydates[0]+"-"+mydates[1]+"-"+mydates[2];
+                String date = "" + mydates[0] + "-" + mydates[1] + "-" + mydates[2];
 
                 int AM_PM;
                 if (Integer.parseInt(mytimes[0]) < 12) {
@@ -443,7 +435,7 @@ public class ConflictFragment1 extends AppCompatActivity {
                 Intent myIntent = new Intent(context, AlarmReceiver.class);
                 myIntent.putExtra("name", name);
                 pendingIntent = PendingIntent.getBroadcast(context, count, myIntent, 0);
-                Log.d("Count", ""+count);
+                Log.d("Count", "" + count);
 
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calSet.getTimeInMillis(), pendingIntent);
@@ -467,19 +459,16 @@ public class ConflictFragment1 extends AppCompatActivity {
                     Toast.makeText(context, "Invalid Event Description", Toast.LENGTH_SHORT).show();
                 } else if (startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
                     Toast.makeText(context, "Please add Starting date and completion date.", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
+                } else {
 
 
-
-                    if(c != null  && c.getCount()>0){
+                    if (c != null && c.getCount() > 0) {
 
                         c.moveToFirst();
                         while (!c.isAfterLast()) {
 
-                            Toast.makeText(ConflictFragment1.this, "Conflict in: " + c.getString(1)+ "   "+ c.getString(2) + "  "+ c.getString(3)+ "  "+ c.getString(4), Toast.LENGTH_LONG).show();
-                            Log.i("Event log", c.getString(0) +" >> " +  c.getString(1) +" >> " + c.getString(2) +" >> " +  c.getString(3) +" >> " + c.getString(4) +" >> ");
+                            Toast.makeText(ConflictFragment1.this, "Conflict in: " + c.getString(1) + "   " + c.getString(2) + "  " + c.getString(3) + "  " + c.getString(4), Toast.LENGTH_LONG).show();
+                            Log.i("Event log", c.getString(0) + " >> " + c.getString(1) + " >> " + c.getString(2) + " >> " + c.getString(3) + " >> " + c.getString(4) + " >> ");
 
 
                             c.moveToNext();
@@ -493,14 +482,12 @@ public class ConflictFragment1 extends AppCompatActivity {
                                     public void onClick(final DialogInterface dialog, int which) {
 
 
-
                                         dialog.dismiss();
 
                                         final AlertDialog.Builder builder = new AlertDialog.Builder(context)
                                                 .setPositiveButton("Add current event", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-
 
 
                                                         myCurrentEvent.add(name);
@@ -519,7 +506,7 @@ public class ConflictFragment1 extends AppCompatActivity {
                                                         descrip.setText(c.getString(2));
                                                         OnboardingFragment2.dateStart.setText(c.getString(3));
                                                         OnboardingFragment2.dateEnd.setText(c.getString(6));
-                                                        Log.i("Event con",c.getString(1) +" "+ c.getString(2) +" "+ c.getString(3) +" "+ c.getString(6));
+                                                        Log.i("Event con", c.getString(1) + " " + c.getString(2) + " " + c.getString(3) + " " + c.getString(6));
 
 
 //                                                        String e_name, e_desc, e_sd, e_ed;
@@ -538,7 +525,7 @@ public class ConflictFragment1 extends AppCompatActivity {
 //                                                        Intent in = new Intent(OnboardingActivity.this, OnboardingActivity2.class);
 //                                                        startActivity(in);
 
-                                                        db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
+                                                        db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts, LandingActivity.latitude, LandingActivity.longtiude);
                                                         OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 
                                                         for (int i = 0; i <= OnboardingFragment3.invitedContacts.size() - 1; i++) {
@@ -576,7 +563,6 @@ public class ConflictFragment1 extends AppCompatActivity {
                                                         dialog.dismiss();
 
 
-
                                                         // Do stuff when user neglects.
                                                     }
                                                 });
@@ -586,20 +572,19 @@ public class ConflictFragment1 extends AppCompatActivity {
                                         ListView modeList = new ListView(context);
                                         myConflictEvents.add(myCurrentEvent.get(0));
                                         c.moveToFirst();
-                                        eventID =  c.getString(0);
+                                        eventID = c.getString(0);
 
                                         while (!c.isAfterLast()) {
 
 
-                                            Log.i("Event conn", " "+c.getString(c.getColumnIndex("EventName")) );
+                                            Log.i("Event conn", " " + c.getString(c.getColumnIndex("EventName")));
                                             Log.i("Event id", eventID);
                                             myConflictEvents.add(c.getString(c.getColumnIndex("EventName"))); //this adds an element to the list.
                                             c.moveToNext();
                                         }
 
 
-
-                                        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1,myConflictEvents );
+                                        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, myConflictEvents);
                                         modeList.setAdapter(modeAdapter);
                                         builder.setView(modeList);
                                         builder.create();
@@ -608,8 +593,8 @@ public class ConflictFragment1 extends AppCompatActivity {
 
                                     }
                                 })
-                                .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
+                                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
 
                                         dialog.dismiss();
                                     }
@@ -622,11 +607,9 @@ public class ConflictFragment1 extends AppCompatActivity {
 //
 
 
-                    }
+                    } else {
 
-                    else {
-
-                        db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
+                        db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts, LandingActivity.latitude, LandingActivity.longtiude);
                         OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 
                         for (int i = 0; i <= OnboardingFragment3.invitedContacts.size() - 1; i++) {
@@ -646,7 +629,6 @@ public class ConflictFragment1 extends AppCompatActivity {
 
             }
         });
-
 
 
     }

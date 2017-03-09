@@ -33,7 +33,6 @@ public class acceptEvent extends AppCompatActivity implements View.OnClickListen
         mcontext = this;
 
 
-
         db = new DataBaseHandler(mcontext);
 
         title = (TextView) findViewById(R.id.textView);
@@ -126,7 +125,7 @@ public class acceptEvent extends AppCompatActivity implements View.OnClickListen
                 b.getString("eventname"), b.getString("eventDescription"), b.getString("eventLocation")
                 , b.getString("eventStartDate"), b.getString("eventStartTime"),
                 b.getString("eventEndDate"), b.getString("eventEndTime"), b.getString("notify"),
-                b.getString("invitedfriends"));
+                b.getString("invitedfriends"), b.getDouble("Latitude"), b.getDouble("Longitude"));
 
 
         finish();

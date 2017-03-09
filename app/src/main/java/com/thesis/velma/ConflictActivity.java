@@ -91,6 +91,7 @@ public class ConflictActivity extends AppCompatActivity {
     String eventID, newdate, id;
     String con_sd, con_ed, con_name, con_desc;
     String e_name, e_desc, e_sd, e_ed, e_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,18 +126,17 @@ public class ConflictActivity extends AppCompatActivity {
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
 
-
         Intent i = getIntent();
         id = i.getStringExtra("eventID");
         newdate = i.getStringExtra("newdate");
-        Log.i("Event Ac1", ""+newdate + " "+id);
+        Log.i("Event Ac1", "" + newdate + " " + id);
 
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
         editor.putString("key", id);
         editor.putString("date", newdate);
         editor.apply();
         final Cursor c = db.editConflictEvent(Long.valueOf(id));
-        Log.i("Event Ac2", ""+c);
+        Log.i("Event Ac2", "" + c);
 
 
         c.moveToFirst();
@@ -147,8 +147,7 @@ public class ConflictActivity extends AppCompatActivity {
         event.setText(con_name);
         descrip.setText(con_desc);
 
-        Log.i("Event conAct",con_name +" "+ con_desc +" "+ con_sd +" "+ con_ed);
-
+        Log.i("Event conAct", con_name + " " + con_desc + " " + con_sd + " " + con_ed);
 
 
         autocompleteFragment.setBoundsBias(new LatLngBounds(
@@ -250,7 +249,6 @@ public class ConflictActivity extends AppCompatActivity {
                 final String invitedContacts = OnboardingFragment3.mtxtinvited.getText().toString();
 
 
-
                 myCurrentEvent.add(name);
                 myCurrentEvent.add(eventDescription);
                 myCurrentEvent.add(eventLocation);
@@ -264,7 +262,7 @@ public class ConflictActivity extends AppCompatActivity {
                 Log.d("EndTime", endDate + " " + endTime);
 
 
-                final Cursor c = db.conflictChecker(startDate,startTime,endDate,endTime);
+                final Cursor c = db.conflictChecker(startDate, startTime, endDate, endTime);
                 String[] mydates = startDate.split("-");
                 String[] mytimes = startTime.split(":");
 
@@ -280,7 +278,7 @@ public class ConflictActivity extends AppCompatActivity {
                 Log.d("Calendar.HOUR_OF_DAY", "" + Integer.parseInt(mytimes[0]));
                 Log.d("Calendar.MINUTE", "" + Integer.parseInt(mytimes[1]));
 
-                String date=""+mydates[0]+"-"+mydates[1]+"-"+mydates[2];
+                String date = "" + mydates[0] + "-" + mydates[1] + "-" + mydates[2];
 
                 int AM_PM;
                 if (Integer.parseInt(mytimes[0]) < 12) {
@@ -333,32 +331,24 @@ public class ConflictActivity extends AppCompatActivity {
                     Toast.makeText(context, "Invalid Event Description", Toast.LENGTH_SHORT).show();
                 } else if (startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
                     Toast.makeText(context, "Please add Starting date and completion date.", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
-
-
+                } else {
 
 
                     Log.i("Event con", "1");
 
 
-                    if(c != null  && c.getCount()>0){
+                    if (c != null && c.getCount() > 0) {
 
                         Log.i("Event con", "2");
                         c.moveToFirst();
                         while (!c.isAfterLast()) {
 
-                            Toast.makeText(ConflictActivity.this, "Conflict in: " + c.getString(1)+ "   "+ c.getString(2) + "  "+ c.getString(3)+ "  "+ c.getString(4), Toast.LENGTH_LONG).show();
-                            Log.i("Event log", c.getString(0) +" >> " +  c.getString(1) +" >> " + c.getString(2) +" >> " +  c.getString(3) +" >> " + c.getString(4) +" >> ");
+                            Toast.makeText(ConflictActivity.this, "Conflict in: " + c.getString(1) + "   " + c.getString(2) + "  " + c.getString(3) + "  " + c.getString(4), Toast.LENGTH_LONG).show();
+                            Log.i("Event log", c.getString(0) + " >> " + c.getString(1) + " >> " + c.getString(2) + " >> " + c.getString(3) + " >> " + c.getString(4) + " >> ");
 
 
                             c.moveToNext();
                         }
-
-
-
-
 
 
                         final AlertDialog.Builder builder = new AlertDialog.Builder(context)
@@ -367,7 +357,6 @@ public class ConflictActivity extends AppCompatActivity {
                                 .setPositiveButton("Add current event", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-
 
 
                                         Log.i("Event con", "4");
@@ -382,22 +371,19 @@ public class ConflictActivity extends AppCompatActivity {
                                         myCurrentEvent.add(invitedContacts);
 
 
-
-
                                         c.moveToFirst();
 
                                         e_name = c.getString(1);
                                         e_desc = c.getString(2);
                                         e_sd = c.getString(3);
-                                        e_ed =  c.getString(6);
+                                        e_ed = c.getString(6);
 
 
                                         event.setText(e_name);
                                         descrip.setText(e_desc);
                                         ConflictFragment2.dateStart.setText(e_sd);
                                         ConflictFragment2.dateEnd.setText(e_ed);
-                                        Log.i("Event con", e_name +" "+ e_desc +" "+ e_sd +" "+ e_ed);
-
+                                        Log.i("Event con", e_name + " " + e_desc + " " + e_sd + " " + e_ed);
 
 
                                         String sd = startDate;
@@ -422,38 +408,38 @@ public class ConflictActivity extends AppCompatActivity {
                                         String eth = ettoken.nextToken();
                                         String etm = ettoken.nextToken();
 
-                                        if(sdd.length()==1){
-                                            sdd = "0"+sdd;
+                                        if (sdd.length() == 1) {
+                                            sdd = "0" + sdd;
                                         }
-                                        if(sdm.length()==1){
-                                            sdm = "0"+sdm;
+                                        if (sdm.length() == 1) {
+                                            sdm = "0" + sdm;
                                         }
-                                        if(edd.length()==1){
-                                            edd = "0"+edd;
+                                        if (edd.length() == 1) {
+                                            edd = "0" + edd;
                                         }
-                                        if(edm.length()==1){
-                                            edm = "0"+edm;
+                                        if (edm.length() == 1) {
+                                            edm = "0" + edm;
                                         }
 
-                                        if(sth.length()==1){
-                                            sth = "0"+sth;
+                                        if (sth.length() == 1) {
+                                            sth = "0" + sth;
                                         }
-                                        if(stm.length()==1){
-                                            stm = "0"+stm;
+                                        if (stm.length() == 1) {
+                                            stm = "0" + stm;
                                         }
-                                        if(eth.length()==1){
-                                            eth = "0"+eth;
+                                        if (eth.length() == 1) {
+                                            eth = "0" + eth;
                                         }
-                                        if(etm.length()==1){
-                                            etm = "0"+etm;
+                                        if (etm.length() == 1) {
+                                            etm = "0" + etm;
                                         }
-                                        sd= sdd+"-"+sdm+"-"+sdy;
-                                        ed= edd+"-"+edm+"-"+edy;
+                                        sd = sdd + "-" + sdm + "-" + sdy;
+                                        ed = edd + "-" + edm + "-" + edy;
 
-                                        st= sth+":"+stm;
-                                        et= eth+":"+etm;
+                                        st = sth + ":" + stm;
+                                        et = eth + ":" + etm;
 
-                                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts);
+                                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts, LandingActivity.latitude, LandingActivity.longtiude);
                                         OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 
                                         for (int i = 0; i <= OnboardingFragment3.invitedContacts.size() - 1; i++) {
@@ -489,7 +475,6 @@ public class ConflictActivity extends AppCompatActivity {
 //                                                                .show();
 
 
-
 //
 //                                                            OnboardingActivity.db.saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 //                                                            OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
@@ -513,7 +498,6 @@ public class ConflictActivity extends AppCompatActivity {
                                     }
 
 
-
                                 }).setNegativeButton("Change", new DialogInterface.OnClickListener() {
 
                                     @Override
@@ -524,7 +508,6 @@ public class ConflictActivity extends AppCompatActivity {
                                         OnboardingFragment2.timeStart.setText("");
                                         OnboardingFragment2.timeEnd.setText("");
                                         dialog.dismiss();
-
 
 
                                         // Do stuff when user neglects.
@@ -548,34 +531,27 @@ public class ConflictActivity extends AppCompatActivity {
                         ListView modeList = new ListView(context);
                         myConflictEvents.add(myCurrentEvent.get(0));
                         c.moveToFirst();
-                        eventID =  c.getString(0);
+                        eventID = c.getString(0);
                         Log.i("Event con", "5");
 
                         while (!c.isAfterLast()) {
 
 
-                            Log.i("Event conn", " "+c.getString(c.getColumnIndex("EventName")) );
+                            Log.i("Event conn", " " + c.getString(c.getColumnIndex("EventName")));
                             Log.i("Event id", eventID);
                             myConflictEvents.add(c.getString(c.getColumnIndex("EventName"))); //this adds an element to the list.
                             c.moveToNext();
                         }
 
 
-
-                        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1,myConflictEvents );
+                        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, myConflictEvents);
                         modeList.setAdapter(modeAdapter);
                         builder.setView(modeList);
                         builder.create();
                         builder.show();
 
 
-                    }
-
-
-
-
-
-                    else {
+                    } else {
 
                         String sd = startDate;
                         String ed = endDate;
@@ -599,38 +575,38 @@ public class ConflictActivity extends AppCompatActivity {
                         String eth = ettoken.nextToken();
                         String etm = ettoken.nextToken();
 
-                        if(sdd.length()==1){
-                            sdd = "0"+sdd;
+                        if (sdd.length() == 1) {
+                            sdd = "0" + sdd;
                         }
-                        if(sdm.length()==1){
-                            sdm = "0"+sdm;
+                        if (sdm.length() == 1) {
+                            sdm = "0" + sdm;
                         }
-                        if(edd.length()==1){
-                            edd = "0"+edd;
+                        if (edd.length() == 1) {
+                            edd = "0" + edd;
                         }
-                        if(edm.length()==1){
-                            edm = "0"+edm;
+                        if (edm.length() == 1) {
+                            edm = "0" + edm;
                         }
 
-                        if(sth.length()==1){
-                            sth = "0"+sth;
+                        if (sth.length() == 1) {
+                            sth = "0" + sth;
                         }
-                        if(stm.length()==1){
-                            stm = "0"+stm;
+                        if (stm.length() == 1) {
+                            stm = "0" + stm;
                         }
-                        if(eth.length()==1){
-                            eth = "0"+eth;
+                        if (eth.length() == 1) {
+                            eth = "0" + eth;
                         }
-                        if(etm.length()==1){
-                            etm = "0"+etm;
+                        if (etm.length() == 1) {
+                            etm = "0" + etm;
                         }
-                        sd= sdd+"-"+sdm+"-"+sdy;
-                        ed= edd+"-"+edm+"-"+edy;
+                        sd = sdd + "-" + sdm + "-" + sdy;
+                        ed = edd + "-" + edm + "-" + edy;
 
-                        st= sth+":"+stm;
-                        et= eth+":"+etm;
+                        st = sth + ":" + stm;
+                        et = eth + ":" + etm;
 
-                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts);
+                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts, LandingActivity.latitude, LandingActivity.longtiude);
                         OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 
                         for (int i = 0; i <= OnboardingFragment3.invitedContacts.size() - 1; i++) {
@@ -650,11 +626,6 @@ public class ConflictActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
 
 
     }

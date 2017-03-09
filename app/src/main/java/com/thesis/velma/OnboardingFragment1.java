@@ -262,6 +262,7 @@ public class OnboardingFragment1 extends Fragment implements View.OnClickListene
                     distanceduration.setVisibility(View.VISIBLE);
 
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

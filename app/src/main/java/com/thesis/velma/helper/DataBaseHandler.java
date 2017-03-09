@@ -58,7 +58,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     //region METHODS
 
     public void saveEvent(String userid, Long eventid, String eventname, String eventDescription, String eventLocation,
-                          String eventStartDate, String eventStartTime, String eventEndDate, String eventEndTime, String notify, String invitedfirends) {
+                          String eventStartDate, String eventStartTime, String eventEndDate, String eventEndTime, String notify, String invitedfirends, Double latitude, Double longitude) {
 
         SQLiteDatabase sql = this.getWritableDatabase();
 
@@ -74,6 +74,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         cv.put(DataInfo.EventEndTime, eventEndTime);
         cv.put(DataInfo.Notify, notify);
         cv.put(DataInfo.Extra1, invitedfirends);
+        cv.put(DataInfo.Extra2, latitude);
+        cv.put(DataInfo.Extra3, longitude);
 
         sql.insert(DataInfo.TBl_Events, null, cv);
 
@@ -135,7 +137,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     }
 
-    //endregion
+
     public Cursor conflictChecker(String sd, String st, String ed, String et) {
 
         StringTokenizer sdtoken = new StringTokenizer(sd, "-");
@@ -304,6 +306,20 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return c;
 //                      (substr(StartDate,7)||substr(StartDate,4,2)||substr(StartDate,1,2))
     }
+
+    public Cursor searchEvents(String startDate,
+                               String startTime, String endDate, String endTime) {
+
+        SQLiteDatabase sql = db.getReadableDatabase();
+
+        Log.d("Query", "SELECT * FROM " + DataInfo.TBl_Events + " Where StartDate= '" + startDate + "' AND StartTime between '" + startTime + "' AND '" + endTime + "'");
+        Cursor c = sql.rawQuery("SELECT * FROM " + DataInfo.TBl_Events + " Where StartDate= '" + startDate + "' ", null);//AND StartTime between '" + startTime + "' AND '" + endTime + "'
+
+        return c;
+
+    }
+
+    //endregion
 
 
 }

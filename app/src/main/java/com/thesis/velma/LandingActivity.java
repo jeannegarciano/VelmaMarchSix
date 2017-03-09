@@ -65,7 +65,7 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
     private static final int PROFILE_PIC_SIZE = 120;
     private ConnectionResult connection_result;
     private boolean is_intent_inprogress;
-
+    public static Double latitude, longtiude;
 
     private boolean is_signInBtn_clicked;
     private int request_code;
@@ -88,7 +88,7 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
     private static final String[] LOCATION_PERMS = {
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
-    static double origlatitude = 0, origlongitude = 0;
+    public static double origlatitude = 0, origlongitude = 0;
 
     private static final int LOCATION_REQUEST = 3;
     LocationManager locationManager;
@@ -140,6 +140,8 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
 
         LoadEvents();
 
+        origlatitude = 10.3157007;
+        origlongitude = 123.88544300000001;
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
@@ -154,6 +156,8 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
                             android.Manifest.permission.ACCESS_FINE_LOCATION,
                     },
                     LOCATION_REQUEST);
+
+            getCurrentLocation();
         }
         //7-2-20172:20
         //7-2-20173:15
@@ -174,24 +178,9 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
 //        OkHttp.getInstance(mcontext).fetchEvents("0000", "a");
 
 
-
     }
 
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Bundle data = intent.getExtras();
-
-
-        Toast.makeText(getBaseContext(), "Hi", Toast.LENGTH_SHORT).show();
-
-        // if (data != null && data.containsKey(YOUR_INTENT_KEY_SOURCE_CONSTANT)) {
-        // process your notification intent
-        // }
-
-        // go on with smth else
-    }
 
 
     @Override
@@ -260,6 +249,9 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
 
         } else {
             Toast.makeText(getBaseContext(), "Location Failed", Toast.LENGTH_SHORT).show();
+
+            origlatitude = 10.3157007;
+            origlongitude = 123.88544300000001;
         }
     }
 
@@ -441,17 +433,52 @@ public class LandingActivity extends AppCompatActivity implements CalendarPicker
         // Toast.makeText(getBaseContext(), "" + view, Toast.LENGTH_LONG).show();
 
         if (view == fab) {
-
-
             int status = NetworkUtil.getConnectivityStatusString(mcontext);
-
             if (status == 0) {
                 CheckInternet.showConnectionDialog(mcontext);
             } else {
 
+
+//                //Cursor mycursor = db.searchEvents(startDate, startTime, endDate, endTime);
+//                Cursor mycursor = db.searchEvents("08-03-2017", "11:00", "08-03-2017", "1:00");
+//
+//                while (mycursor.moveToNext()) {
+//                    //eventlatitude = mycursor.getDouble(mycursor.getColumnIndex("Extra2"));
+//                    //eventlongitude = mycursor.getDouble(mycursor.getColumnIndex("Extra3"));
+//
+//
+//                    SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+//                    try {
+//                        Date Date1 = format.parse("05:00");
+//                        Date Date2 = format.parse("04:30");
+//                        long mills = Date1.getTime() - Date2.getTime();
+//                        Log.d("Data1", "" + Date1.getTime());
+//                        Log.d("Data2", "" + Date2.getTime());
+//                        int Hours = (int) (mills / (1000 * 60 * 60));
+//                        int Mins = (int) (mills / (1000 * 60)) % 60;
+//
+//                        String diff = Hours + ":" + Mins; // updated value every1 second
+//                        Toast.makeText(getBaseContext(), "" + diff, Toast.LENGTH_SHORT).show();
+//
+//
+//                        int comareResult = diff.compareTo("05:00");
+//
+//                        if (diff.compareTo("05:00") >= 0) {
+//                            Toast.makeText(getBaseContext(), "Here1", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(getBaseContext(), "Here2", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//
+//                }
+
+                //Toast.makeText(mcontext, "" + c.getCount(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LandingActivity.this, OnboardingActivity.class);
                 startActivityForResult(intent, CREATE_EVENT);
-
             }
         }
     }

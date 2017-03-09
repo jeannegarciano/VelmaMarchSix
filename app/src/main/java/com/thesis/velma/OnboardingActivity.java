@@ -49,8 +49,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -68,7 +70,7 @@ public class OnboardingActivity extends AppCompatActivity {
     private ViewPager pager;
     private SmartTabLayout indicator;
     public Button skip;
-    public Button BtnAddEvent;
+    public static Button BtnAddEvent;
     public EditText event;
     Context context;
 
@@ -78,7 +80,8 @@ public class OnboardingActivity extends AppCompatActivity {
     public static TextView locate;
     public static TextView distanceduration;
     int PLACE_PICKER_REQUEST = 1;
-    Double latitude, longtiude;
+    public static String travelduration;
+
 
     public static String geolocation;
     String modetravel = "driving";
@@ -143,11 +146,11 @@ public class OnboardingActivity extends AppCompatActivity {
                 locate.setText("" + place.getAddress());
                 geolocation = place.getAddress().toString();
 
-                latitude = place.getLatLng().latitude;
-                longtiude = place.getLatLng().longitude;
+                LandingActivity.latitude = place.getLatLng().latitude;
+                LandingActivity.longtiude = place.getLatLng().longitude;
 
 
-                Log.d("latlang", "" + latitude + ":" + longtiude);
+                Log.d("latlang", "" + LandingActivity.latitude + ":" + LandingActivity.longtiude);
 
                 new getDetails().execute();
 
@@ -242,82 +245,58 @@ public class OnboardingActivity extends AppCompatActivity {
                 Log.d("EndTime", endDate + " " + endTime);
 
 
+//                Cursor mycursor = db.searchEvents(startDate, startTime, endDate, endTime);
+//                //Cursor mycursor = db.searchEvents("08-03-2017", "11:00", "08-03-2017", "1:00");
+//
+//                //Toast.makeText(getBaseContext(), "" + mycursor.getCount(), Toast.LENGTH_SHORT).show();
+//                while (mycursor.moveToNext()) {
+//
+//                    String eventstarttime = mycursor.getString(mycursor.getColumnIndex("StartTime"));
+//
+//                    //Toast.makeText(getBaseContext(), "Here", Toast.LENGTH_SHORT).show();
+//
+//                    SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+//                    try {
+//                        Date Date1 = format.parse(eventstarttime);
+//                        Date Date2 = format.parse(startTime);
+//                        long mills = Date1.getTime() - Date2.getTime();
+//                        Log.d("Data1", "" + Date1.getTime());
+//                        Log.d("Data2", "" + Date2.getTime());
+//                        int Hours = (int) (mills / (1000 * 60 * 60));
+//                        int Mins = (int) (mills / (1000 * 60)) % 60;
+//
+//                        String diff = Hours + ":" + Mins; // updated value every1 second
+//
+//                        String timeduration;
+//                        String[] duration = travelduration.split(" ");
+//                        int mydurationH = Hours + Integer.parseInt(duration[0]);
+//                        int mydurationM = Mins + Integer.parseInt(duration[0]);
+//
+//                        if (duration.length > 2) {
+//                            timeduration = mydurationH + ":" + Mins;
+//                        } else {
+//                            timeduration = Hours + ":" + mydurationM;
+//                        }
+//
+//                        Toast.makeText(getBaseContext(), "" + diff.compareTo(timeduration), Toast.LENGTH_SHORT).show();
+//                        if (diff.compareTo(timeduration) < 5) {
+//                            Toast.makeText(getBaseContext(), "Here 1.", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(getBaseContext(), "Cannot add event theres a conflict of location.", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//
+//                }
+
                 final Cursor c = db.conflictChecker(startDate, startTime, endDate, endTime);
 
-//                String[] mydates = startDate.split("-");
-//                String[] mytimes = startTime.split(":");
-//
-//
-//                //HARDCODED VALUES 10:51
-//                Calendar calNow = Calendar.getInstance();
-//                Calendar calSet = (Calendar) calNow.clone();
-//
-//
-//                Log.d("Calendar.YEAR", "" + Integer.parseInt(mydates[2]));
-//                Log.d("Calendar.MONTH", "" + Integer.parseInt(mydates[1]));
-//                Log.d("Calendar.DATE", "" + Integer.parseInt(mydates[0]));
-//                Log.d("Calendar.HOUR_OF_DAY", "" + Integer.parseInt(mytimes[0]));
-//                Log.d("Calendar.MINUTE", "" + Integer.parseInt(mytimes[1]));
-//
-//                String date=""+mydates[0]+"-"+mydates[1]+"-"+mydates[2];
-//
-//                int AM_PM;
-//                if (Integer.parseInt(mytimes[0]) < 12) {
-//                    AM_PM = 0;
-//                } else {
-//                    AM_PM = 1;
-//                }
-//
-////                calSet.set(Calendar.YEAR, Integer.parseInt(mydates[2]));
-////                calSet.set(Calendar.MONTH, Integer.parseInt(mydates[1])-1);
-////                calSet.set(Calendar.DATE, Integer.parseInt(mydates[0]));
-////                calSet.set(Calendar.HOUR, Integer.parseInt(mytimes[0]));
-////                calSet.set(Calendar.MINUTE, Integer.parseInt(mytimes[1]));
-////                calSet.set(Calendar.SECOND, 0);
-////                calSet.set(Calendar.MILLISECOND, 0);
-////                calSet.set(Calendar.AM_PM, AM_PM);
-//
-//                calSet.setTimeInMillis(System.currentTimeMillis());
-//                calSet.clear();
-//                calSet.set(Integer.parseInt(mydates[2]), Integer.parseInt(mydates[1]) - 1, Integer.parseInt(mydates[0]), Integer.parseInt(mytimes[0]), Integer.parseInt(mytimes[1])-10);
-//
-//                int count = LandingActivity.db.retrieveDayEvent();
-////                LandingActivity.db.close();
-//
-//
-//                    Intent myIntent = new Intent(context, AlarmReceiver.class);
-//                    myIntent.putExtra("unix", unixtime);
-//                    myIntent.putExtra("name", name);
-//                    myIntent.putExtra("description", eventDescription);
-//                    myIntent.putExtra("location", eventLocation);
-//                    myIntent.putExtra("start", startTime);
-//                    myIntent.putExtra("end",endTime);
-//                    myIntent.putExtra("dateS", startDate);
-//                    myIntent.putExtra("dateE", endDate);
-//                    myIntent.putExtra("people", invitedContacts);
-//                    pendingIntent = PendingIntent.getBroadcast(context, count, myIntent, 0);
-//                    Log.d("Count", ""+count);
-//
-//
-//
-//
-//
-//                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calSet.getTimeInMillis(), pendingIntent);
 
-
-//                Calendar myAlarmDate = Calendar.getInstance();
-//                myAlarmDate.setTimeInMillis(System.currentTimeMillis());
-//                //myAlarmDate.set(Integer.parseInt(mydates[1]), 11, 25, 12, 00, 0);
-//                myAlarmDate.set(Integer.parseInt(mydates[2]), Integer.parseInt(mydates[1]), Integer.parseInt(mydates[0]), Integer.parseInt(mytimes[0]), Integer.parseInt(mytimes[1]), 0);
-//                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//
-//                Intent _myIntent = new Intent(context, Alarm_Receiver.class);
-//                _myIntent.putExtra("MyMessage", name);
-//                PendingIntent _myPendingIntent = PendingIntent.getBroadcast(context, 123, _myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                alarmManager.set(AlarmManager.RTC_WAKEUP, myAlarmDate.getTimeInMillis(), _myPendingIntent);
-
-
+                //region saveEvent
                 if (name.isEmpty()) {
                     Toast.makeText(context, "Invalid Event Name", Toast.LENGTH_SHORT).show();
                 } else if (eventDescription.isEmpty()) {
@@ -431,7 +410,7 @@ public class OnboardingActivity extends AppCompatActivity {
                                         st = sth + ":" + stm;
                                         et = eth + ":" + etm;
 
-                                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts);
+                                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts, LandingActivity.latitude, LandingActivity.longtiude);
                                         OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 
                                         for (int i = 0; i <= OnboardingFragment3.invitedContacts.size() - 1; i++) {
@@ -588,14 +567,6 @@ public class OnboardingActivity extends AppCompatActivity {
                             AM_PM = 1;
                         }
 
-//                calSet.set(Calendar.YEAR, Integer.parseInt(mydates[2]));
-//                calSet.set(Calendar.MONTH, Integer.parseInt(mydates[1])-1);
-//                calSet.set(Calendar.DATE, Integer.parseInt(mydates[0]));
-//                calSet.set(Calendar.HOUR, Integer.parseInt(mytimes[0]));
-//                calSet.set(Calendar.MINUTE, Integer.parseInt(mytimes[1]));
-//                calSet.set(Calendar.SECOND, 0);
-//                calSet.set(Calendar.MILLISECOND, 0);
-//                calSet.set(Calendar.AM_PM, AM_PM);
 
                         calSet.setTimeInMillis(System.currentTimeMillis());
                         calSet.clear();
@@ -627,7 +598,7 @@ public class OnboardingActivity extends AppCompatActivity {
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calSet.getTimeInMillis(), pendingIntent);
 
 
-                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts);
+                        LandingActivity.db.saveEvent(LandingActivity.imei, unixtime, name, eventDescription, eventLocation, sd, st, ed, et, notify, invitedContacts, LandingActivity.latitude, LandingActivity.longtiude);
                         OkHttp.getInstance(getBaseContext()).saveEvent(unixtime, name, eventDescription, eventLocation, startDate, startTime, endDate, endTime, notify, invitedContacts);
 
                         for (int i = 0; i <= OnboardingFragment3.invitedContacts.size() - 1; i++) {
@@ -643,6 +614,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
                     }
                 }
+                //endregion
 
             }
         });
@@ -650,6 +622,13 @@ public class OnboardingActivity extends AppCompatActivity {
 
     }
 
+    public String addTime(int hour, int minute, int minutesToAdd) {
+        Calendar calendar = new GregorianCalendar(1990, 1, 1, hour, minute);
+        calendar.add(Calendar.MINUTE, minutesToAdd);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String date = sdf.format(calendar.getTime());
+        return date;
+    }
 
     class getDetails extends AsyncTask<Void, Void, String> {
 
@@ -671,7 +650,7 @@ public class OnboardingActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
 
             String text = null;
-            String coordinates = latitude + "," + longtiude;
+            String coordinates = LandingActivity.latitude + "," + LandingActivity.longtiude;
             Log.d("Coordinates", coordinates);
             try {
                 String regAPIURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + LandingActivity.origlatitude + "," + LandingActivity.origlongitude;
@@ -706,9 +685,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
             if (s != null) {
 
-
                 try {
-
 
                     String distance = new JSONObject(s)
                             .getJSONArray("rows")
@@ -723,6 +700,8 @@ public class OnboardingActivity extends AppCompatActivity {
                             .getJSONArray("elements")
                             .getJSONObject(0)
                             .getJSONObject("duration").getString("text");
+
+                    travelduration = duration;
 
                     distanceduration.setText("Distance : " + distance + ": Duration : " + duration);
                     distanceduration.setVisibility(View.VISIBLE);

@@ -176,7 +176,7 @@ public class OkHttp {
                                     myobject.getString("EventName"), myobject.getString("EventDescription"),
                                     myobject.getString("EventLocation"), startdate[2] + "-" + startdate[1] + "-" + startdate[0],
                                     myobject.getString("StartTime"), endate[2] + "-" + endate[1] + "-" + endate[0],
-                                    myobject.getString("EndTime"), "", myobject.getString("InvitedFriends"));
+                                    myobject.getString("EndTime"), "", myobject.getString("InvitedFriends"), LandingActivity.origlatitude, LandingActivity.origlongitude);
 
                         }
 
@@ -240,7 +240,7 @@ public class OkHttp {
                     // Run view-related code back on the main thread
 
 
-                    if (responseData.equalsIgnoreCase("Records added successfully.")){
+                    if (responseData.equalsIgnoreCase("Records added successfully.")) {
 
                         mainHandler.post(new Runnable() {
                             @Override
@@ -256,8 +256,7 @@ public class OkHttp {
 //                                    startDate, startTime, endDate, endTime, notify, invitedContacts, target[0] + "Velma");//target[0]
 //                        }
 
-                    }
-                    else{
+                    } else {
 
 
                         mainHandler.post(new Runnable() {
@@ -268,10 +267,6 @@ public class OkHttp {
                         });
 
                     }
-
-
-
-
 
 
                 } else {
@@ -348,8 +343,8 @@ public class OkHttp {
     }
 
     public void sendNotificationUpdate(String invitationTitle, Long eventid, String eventname, String eventDescription, String eventLocation,
-                                 String eventStartDate, String eventStartTime, String eventEndDate,
-                                 String eventEndTime, String notify, String invitedfirends, String target) {
+                                       String eventStartDate, String eventStartTime, String eventEndDate,
+                                       String eventEndTime, String notify, String invitedfirends, String target) {
 
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://velma.000webhostapp.com/sendNotification_update.php").newBuilder();
@@ -537,7 +532,7 @@ public class OkHttp {
     }
 
     public void cancelNotification(String invitationTitle, Long eventid, String eventname, String eventDescription, String eventLocation,
-                                 String eventStartTime, String eventEndTime, String eventStartDate, String eventEndDate, String invitedfirends, String target) {
+                                   String eventStartTime, String eventEndTime, String eventStartDate, String eventEndDate, String invitedfirends, String target) {
 
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://velma.000webhostapp.com/sendNotification_cancel.php").newBuilder();
